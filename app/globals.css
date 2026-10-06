@@ -1,26 +1,270 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ================================================================== */
+/* Tokens — derivados do logo do cartão, não inventados                */
+/* ================================================================== */
+
+@theme {
+  --color-ink: #050a14;
+  --color-navy-900: #0a1f3d;
+  --color-navy-700: #15386e;
+  --color-royal: #1e5bbf;
+  --color-cyan: #4fa8e8;
+  --color-frost: #bfe3f7;
+  --color-paper: #ffffff;
+  --color-wa: #25d366;
+
+  --font-display: var(--font-archivo), "Arial Narrow", sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
+
+  --ease-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-quint: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ================================================================== */
+/* Base                                                                */
+/* ================================================================== */
+
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: auto; /* o Lenis cuida disso */
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  overflow-x: clip;
+}
+
+/* O Lenis trava o scroll nativo enquanto o preloader roda. */
+body.is-locked {
+  overflow: hidden;
+  height: 100vh;
+}
+
+::selection {
+  background: var(--color-royal);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Tipografia display: condensada e alta, como a peça de referência. */
+.font-display {
+  font-family: var(--font-display);
+  font-stretch: 75%;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ================================================================== */
+/* Cursor customizado                                                  */
+/* ================================================================== */
+
+/* Só escondemos o cursor nativo quando o customizado está de fato ativo —
+   nunca em dispositivo de toque, onde não há ponteiro para substituir. */
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor [data-cursor] {
+  cursor: none;
+}
+
+/* ================================================================== */
+/* Reveals — blur + deslocamento, a assinatura do sistema              */
+/* ================================================================== */
+
+@keyframes reveal-down {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes reveal-side {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes title-rise {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(42px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes fact-rise {
+  from {
+    opacity: 0;
+    filter: blur(7px);
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes portal-caption {
+  from {
+    opacity: 0;
+    filter: blur(7px);
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes menu-row {
+  from {
+    opacity: 0.35;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes active-dot {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes preload-count-out {
+  to {
+    opacity: 0;
+    filter: blur(7px);
+    transform: translate(-50%, -34px);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes frost-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* ================================================================== */
+/* Acessibilidade — o site continua completo, só para de se mexer      */
+/* ================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button {
+    cursor: auto;
+  }
+}
+
+/* ================================================================== */
+/* Utilitário de reveal — consumido pelo componente <Reveal>           */
+/* ================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+}
+
+[data-reveal].is-revealed {
+  will-change: opacity, transform, filter;
+}
+
+[data-reveal="rise"].is-revealed {
+  animation: fact-rise 0.72s var(--ease-expo) both;
+}
+
+[data-reveal="title"].is-revealed {
+  animation: title-rise 1.05s var(--ease-quint) both;
+}
+
+[data-reveal="side"].is-revealed {
+  animation: reveal-side 0.9s var(--ease-expo) both;
+}
+
+[data-reveal="down"].is-revealed {
+  animation: reveal-down 0.9s var(--ease-expo) both;
+}
+
+/* Depois da animação o will-change sai de cena: mantê-lo custa memória de GPU. */
+[data-reveal].is-settled {
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+  }
+}
+
+/* O header é fixo: sem esta margem, um link de âncora esconde o começo da
+   seção atrás dele. */
+section[id] {
+  scroll-margin-top: 6rem;
 }

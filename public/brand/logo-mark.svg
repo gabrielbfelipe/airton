@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="AIRTON Climatização">
+  <title>AIRTON Climatização</title>
+
+  <defs>
+    <linearGradient id="airton-a" x1="22" y1="10" x2="104" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5FB4F0"/>
+      <stop offset=".5" stop-color="#1E5BBF"/>
+      <stop offset="1" stop-color="#123A80"/>
+    </linearGradient>
+    <linearGradient id="airton-wave" x1="16" y1="86" x2="104" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8FD4FF"/>
+      <stop offset="1" stop-color="#3C8FDC"/>
+    </linearGradient>
+
+    <!-- As ondas atravessam o A por cima e a parte de fora some: o fluxo de ar
+         passa POR DENTRO da letra, em vez de flutuar ao redor dela. -->
+    <clipPath id="airton-inside">
+      <path d="M60 8 L104 112 L80 112 L60 60 L40 112 L16 112 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- O "A": chevron com perna cheia, legível a 24px -->
+  <path id="logo-a"
+        d="M60 8 L104 112 L80 112 L60 60 L40 112 L16 112 Z"
+        fill="url(#airton-a)"/>
+
+  <!-- Ondas de ar, recortadas pela própria letra -->
+  <g id="logo-waves" clip-path="url(#airton-inside)" stroke="url(#airton-wave)"
+     stroke-width="9" stroke-linecap="round" fill="none">
+    <path d="M8 82c11-9 22-9 33 0s22 9 33 0 22-9 33 0"/>
+    <path d="M8 103c11-9 22-9 33 0s22 9 33 0 22-9 33 0"/>
+  </g>
+</svg>
